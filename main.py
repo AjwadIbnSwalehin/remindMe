@@ -16,13 +16,13 @@ async def on_ready():
 async def sync(ctx):
     await ctx.send(f"Syncing...")
     await bot.tree.sync()
-    await bot.tree.sync(guild = discord.Object(id=658948161171357698))
+    await bot.tree.sync(guild = discord.Object(id=0000000000000))
     await ctx.send(f"Syncing Complete!")
 
 @bot.command()
 async def remind(ctx, message:str, hour:int, minute: int, second:int):
-    time = time_conversion(hour, minute, second)
-    await asyncio.sleep(time)
+    wait = time_conversion(hour, minute, second)
+    await asyncio.sleep(wait)
     await ctx.send(f"{ctx.author.mention}, Reminder: {message}")
 
 @bot.command()
