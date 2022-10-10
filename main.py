@@ -1,4 +1,4 @@
-import discord, asyncio, os
+import discord, asyncio, datetime
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
@@ -16,7 +16,7 @@ async def on_ready():
 async def sync(ctx):
     await ctx.send(f"Syncing...")
     await bot.tree.sync()
-    await bot.tree.sync(guild = discord.Object(id=0000000000000))
+    await bot.tree.sync(guild = discord.Object(id=0000000000000000000))
     await ctx.send(f"Syncing Complete!")
 
 @bot.command()
@@ -41,4 +41,13 @@ async def embed(ctx, member:discord.Member = None):
 
     await ctx.send(embed = embed)
 
-bot.run("Token")
+@bot.command()
+async def timeremind(ctx, hours, minutes, daily_reminder):
+    now = datetime.datetime.now()
+    then = now + datetime.timedelta(days = 1)
+    then = now.replace(hour = int(hours), minute = int(minutes))
+    wait_time = (then-now).total_seconds()
+    await asyncio.sleep(wait_time)
+    await ctx.send(daily_reminder)
+
+bot.run("Bot Token")
