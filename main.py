@@ -7,6 +7,12 @@ def time_conversion(hour, minute, second):
     time = (hour * 3600) + (minute * 60) + second
     return time
 
+def find_time(hours, minutes):
+    now = datetime.datetime.now()
+    then = now + datetime.timedelta(days = 1)
+    then = now.replace(hour = int(hours), minute = int(minutes))
+    return now, then
+
 @bot.event
 async def on_ready():
     await bot.change_presence(activity = discord.Game("Reminding since 2022!"))
@@ -16,7 +22,7 @@ async def on_ready():
 async def sync(ctx):
     await ctx.send(f"Syncing...")
     await bot.tree.sync()
-    await bot.tree.sync(guild = discord.Object(id=0000000000000000000))
+    await bot.tree.sync(guild = discord.Object(id=000000000000000000000000))
     await ctx.send(f"Syncing Complete!")
 
 @bot.command()
@@ -43,9 +49,7 @@ async def embed(ctx, member:discord.Member = None):
 
 @bot.command()
 async def timeremind(ctx, hours, minutes, daily_reminder):
-    now = datetime.datetime.now()
-    then = now + datetime.timedelta(days = 1)
-    then = now.replace(hour = int(hours), minute = int(minutes))
+    now, then = find_time(hours, minutes) 
     wait_time = (then-now).total_seconds()
     await asyncio.sleep(wait_time)
     await ctx.send(daily_reminder)
